@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Información y Indicadores</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2910/2910763.png" type="image/png">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body {
+            background-image: url('logo-pro.png');
+            background-size: 10%;
+            background-repeat: no-repeat;
+            background-position: left 100px; /* canto esquerdo abaixo do título */ /* move a imagem para baixo */
+            background-color: rgba(255, 255, 255, 1);
+            /* camada de transparência usando pseudo-elemento */
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/mnt/data/logo-pro.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 200%; /* aumenta para eliminar reconhecimento da imagem */
+            opacity: 90.10; /* torna praticamente invisível */
+            filter: blur(70px) brightness(1.1); /* efeito esfumado forte */
+            pointer-events: none;
+            z-index: -1;
+        }
+        .card-3d {
+            perspective: 1000px;
+        }
+        .card-inner {
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            transform-style: preserve-3d;
+            transform-origin: center;
+        }
+        .card-3d:hover .card-inner {
+            transform: rotateY(10deg) rotateX(10deg) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .card-3d:hover::before {
+            opacity: 0.2;
+        }
+        .card-3d::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.3), transparent);
+            opacity: 0;
+            border-radius: 1rem;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+        @media (max-width: 768px) {
+            .card-3d:hover .card-inner {
+                transform: none;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 flex flex-col min-h-screen">
+
+<header class="bg-gradient-to-r from-green-600 to-teal-600 text-white p-6 shadow-lg flex justify-between items-center">
+    <h1 class="text-4xl font-extrabold">Centro de Información y Indicadores</h1>
+    <div id="clock" class="text-xl font-semibold"></div>
+</header>
+
+<main class="flex-grow flex flex-col items-center justify-center gap-8 mt-12 px-4 md:flex-row md:justify-center md:flex-wrap">
+
+    <!-- Indicadores SS -->
+    <a href="https://andrepe-ux.github.io/indicadores/" target="_blank" rel="noopener noreferrer"
+       class="card-3d relative w-64 h-48 bg-gradient-to-br from-cyan-500 to-green-600 rounded-2xl shadow-lg overflow-hidden cursor-pointer">
+        <div class="card-inner flex flex-col items-center justify-center h-full text-white">
+            <i data-feather="activity" class="w-12 h-12 mb-4"></i>
+            <h2 class="text-xl font-bold text-center">Indicadores SS</h2>
+        </div>
+    </a>
+
+    <!-- Incidencias -->
+    <a href="https://andrepe-ux.github.io/incidencias/" target="_blank" rel="noopener noreferrer"
+       class="card-3d relative w-64 h-48 bg-gradient-to-br from-gray-500 to-gray-700 rounded-2xl shadow-lg overflow-hidden cursor-pointer">
+        <div class="card-inner flex flex-col items-center justify-center h-full text-white">
+            <i data-feather="search" class="w-12 h-12 mb-4"></i>
+            <h2 class="text-xl font-bold text-center">Incidencias</h2>
+        </div>
+    </a>
+
+</main>
+
+<footer class="bg-gray-900 text-white text-center p-1 mt-auto">
+    Área Contratación y Movimientos SH © 2025
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        feather.replace();
+        updateClock();
+        setInterval(updateClock, 1000);
+    });
+
+    function updateClock() {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const time = now.toLocaleTimeString('pt-BR');
+        const date = now.toLocaleDateString('pt-BR', options);
+        document.getElementById('clock').textContent = `${date} ${time}`;
+    }
+</script>
+
+</body>
+</html>
