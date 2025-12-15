@@ -9,13 +9,11 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <style>
         body {
-            background-image: url('logo-pro.png');
-            background-size: 10%;
-            background-repeat: no-repeat;
-            background-position: left 100px; /* canto esquerdo abaixo do título */ /* move a imagem para baixo */
-            background-color: rgba(255, 255, 255, 1);
-            /* camada de transparência usando pseudo-elemento */
+            background-color: #444; /* Fundo mais claro */
+            background-image: none; /* Remove o círculo verde sutil para o logo de fundo */
+            position: relative; 
         }
+        
         body::before {
             content: '';
             position: fixed;
@@ -23,88 +21,198 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('/mnt/data/logo-pro.png');
+            background-image: url('logo-pro.png'); /* Caminho para o seu logo */
             background-repeat: no-repeat;
             background-position: center;
-            background-size: 200%; /* aumenta para eliminar reconhecimento da imagem */
-            opacity: 0.10; /* torna praticamente invisível */
-            filter: blur(70px) brightness(1.1); /* efeito esfumado forte */
-            pointer-events: none;
-            z-index: -1;
+            background-size: 50%; /* Tamanho do logo no fundo */
+            opacity: 0.10; /* Opacidade reduzida */
+            filter: blur(15px) brightness(1.1); /* Efeito de desfoque e brilho sutil */
+            pointer-events: none; /* Garante que não interfira com interações do mouse */
+            z-index: -1; /* Coloca o logo atrás de todo o conteúdo */
         }
-        .card-3d {
-            perspective: 1000px;
+
+        .card-item {
+            position: relative;
+            background-color: #555; 
+            border-radius: 0.75rem; 
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            align-items: flex-start; 
+            padding: 1.5rem 1.8rem; /* Aumenta o padding para cartões maiores */
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: space-between; 
         }
-        .card-inner {
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            transform-style: preserve-3d;
-            transform-origin: center;
+        .card-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
         }
-        .card-3d:hover .card-inner {
-            transform: rotateY(10deg) rotateX(10deg) scale(1.05);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        .card-item i {
+            margin-bottom: 0.75rem; /* Mais espaço para ícones maiores */
+            width: 56px; /* w-14 */
+            height: 56px; /* h-14 */
         }
-        .card-3d:hover::before {
-            opacity: 0.2;
+        .card-item h2 {
+            font-weight: 600;
+            font-size: 1.75rem; /* text-2xl */
+            line-height: 1.2;
+            text-align: left;
+            margin-bottom: 0.75rem; /* Espaço antes da barra de rodapé do cartão */
         }
-        .card-3d::before {
-            content: '';
+        
+        .card-footer-bar {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at top left, rgba(255,255,255,0.3), transparent);
-            opacity: 0;
-            border-radius: 1rem;
-            transition: opacity 0.4s;
-            pointer-events: none;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 8px; 
+            background-color: rgba(255, 255, 255, 0.2); 
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            z-index: 10;
         }
+
+        /* Definições de tamanho padrão para os 3 cartões - AUMENTADOS */
+        .card-item {
+            width: 300px; /* Aumentada a largura */
+            height: 200px; /* Aumentada a altura */
+        }
+
+        /* Cores dos cartões */
+        .card-purple {
+            background: linear-gradient(to right, #9C27B0, #673AB7); 
+        }
+        .card-yellow-orange {
+            background: linear-gradient(to right, #FFC107, #FF9800); 
+        }
+        .card-blue-cyan {
+            background: linear-gradient(to right, #2196F3, #00BCD4); 
+        }
+        /* Nova cor para o cartão "Jubilados" */
+        .card-green-lime {
+            background: linear-gradient(to right, #4CAF50, #8BC34A); 
+        }
+
+        /* Estilo para o cabeçalho */
+        .header-bg {
+            background-color: rgba(0, 0, 0, 0.4); 
+            backdrop-filter: blur(5px); 
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        /* Container flexível para os 3 cartões */
+        .card-container {
+            display: flex;
+            gap: 2.5rem; /* Aumenta o espaçamento entre os cartões */
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap; 
+        }
+        
+        /* Classes para a hora e data */
+        .time-display {
+            font-size: 1rem; 
+            font-weight: bold;
+        }
+        .date-display {
+            font-size: 0.75rem; 
+            margin-top: -0.1rem; 
+        }
+
+        /* Estilo para o container do logo e relógio */
+        .header-right-content {
+            display: flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+        }
+        .logo-header {
+            width: 32px; 
+            height: 32px;
+        }
+
         @media (max-width: 768px) {
-            .card-3d:hover .card-inner {
-                transform: none;
-                box-shadow: none;
+            .card-container {
+                gap: 1.5rem;
+            }
+            .card-item {
+                width: 90%; /* Mantém responsividade */
+                height: auto; /* Altura flexível em mobile */
+                padding: 1.2rem;
+            }
+            .card-item i {
+                width: 48px;
+                height: 48px;
+            }
+            .card-item h2 {
+                font-size: 1.5rem;
+            }
+            .logo-header {
+                width: 28px;
+                height: 28px;
+            }
+            .time-display {
+                font-size: 0.9rem;
+            }
+            .date-display {
+                font-size: 0.65rem;
             }
         }
     </style>
 </head>
 
-<body class="bg-gray-50 flex flex-col min-h-screen">
+<body class="bg-gray-800 text-gray-200 flex flex-col min-h-screen">
 
-<header class="bg-gradient-to-r from-green-600 to-teal-600 text-white p-2 shadow-lg flex justify-between items-center">
-    <h1 class="text-2xl font-extrabold">Centro de Información y Indicadores</h1>
-    <div id="clock" class="text-xl font-semibold"></div>
+<header class="header-bg text-white p-4 shadow-lg flex justify-between items-center fixed w-full top-0 z-50">
+    <h1 class="text-3xl font-bold">Centro de Información y Indicadores</h1>
+    
+    <div class="header-right-content text-right text-sm">
+        <div>
+            <div id="time-clock" class="time-display"></div> 
+            <div id="date-clock" class="date-display"></div> 
+        </div>
+        <img src="logo-pro.png" alt="Logo Pro" class="logo-header">
+    </div>
 </header>
 
-<main class="flex-grow flex flex-col items-center justify-center gap-8 mt-12 px-4 md:flex-row md:justify-center md:flex-wrap">
+<main class="flex-grow flex items-center justify-center p-4 mt-24 md:mt-16">
+    <div class="card-container">
+        
+        <a href="https://andrepe-ux.github.io/indicadores/" target="_blank" rel="noopener noreferrer"
+           class="card-item card-purple">
+            <i data-feather="activity"></i>
+            <h2>Indicadores SS</h2>
+            <div class="card-footer-bar"></div>
+        </a>
 
-    <!-- Indicadores SS -->
-    <a href="https://andrepe-ux.github.io/indicadores/" target="_blank" rel="noopener noreferrer"
-       class="card-3d relative w-64 h-48 bg-gradient-to-br from-cyan-500 to-green-600 rounded-2xl shadow-lg overflow-hidden cursor-pointer">
-        <div class="card-inner flex flex-col items-center justify-center h-full text-white">
-            <i data-feather="activity" class="w-12 h-12 mb-4"></i>
-            <h2 class="text-xl font-bold text-center">Indicadores SS</h2>
-        </div>
-    </a>
+        <a href="https://andrepe-ux.github.io/incidencias/" target="_blank" rel="noopener noreferrer"
+           class="card-item card-yellow-orange">
+            <i data-feather="search"></i>
+            <h2>Incidencias</h2>
+            <div class="card-footer-bar"></div>
+        </a>
 
-    <!-- Incidencias -->
-    <a href="https://andrepe-ux.github.io/incidencias/" target="_blank" rel="noopener noreferrer"
-       class="card-3d relative w-64 h-48 bg-gradient-to-br from-gray-500 to-gray-700 rounded-2xl shadow-lg overflow-hidden cursor-pointer">
-        <div class="card-inner flex flex-col items-center justify-center h-full text-white">
-            <i data-feather="search" class="w-12 h-12 mb-4"></i>
-            <h2 class="text-xl font-bold text-center">Incidencias</h2>
-        </div>
-    </a>
-
-    <!-- Informes -->
-    <a href="https://andrepe-ux.github.io/informes/" target="_blank" rel="noopener noreferrer"
-       class="card-3d relative w-64 h-48 bg-gradient-to-br from-indigo-500 to-indigo-700 rounded-2xl shadow-lg overflow-hidden cursor-pointer">
-        <div class="card-inner flex flex-col items-center justify-center h-full text-white">
-            <i data-feather="file-text" class="w-12 h-12 mb-4"></i>
-            <h2 class="text-xl font-bold text-center">Informes e Relatórios</h2>
-        </div>
-    </a>
-
+        <a href="https://andrepe-ux.github.io/informes/" target="_blank" rel="noopener noreferrer"
+           class="card-item card-blue-cyan">
+            <i data-feather="file-text"></i>
+            <h2>Informes</h2>
+            <div class="card-footer-bar"></div>
+        </a>
+        
+        <a href="https://andrepe-ux.github.io/contrastarjubilados/" target="_blank" rel="noopener noreferrer"
+           class="card-item card-green-lime">
+            <i data-feather="users"></i>
+            <h2>Jubilados</h2>
+            <div class="card-footer-bar"></div>
+        </a>
+        
+    </div>
 </main>
 
-<footer class="bg-gray-900 text-white text-center p-1 mt-auto">
+<footer class="bg-gray-900 text-gray-400 text-center p-2 mt-auto text-sm">
     Área Contratación y Movimientos SH © 2025
 </footer>
 
@@ -117,13 +225,26 @@
 
     function updateClock() {
         const now = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        const time = now.toLocaleTimeString('pt-BR');
-        const date = now.toLocaleDateString('pt-BR', options);
-        document.getElementById('clock').textContent = `${date} ${time}`;
+        
+        // 1. Hora: Apenas HH:MM no formato 24h ES
+        const timeOptions = { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' };
+        const timePart = now.toLocaleTimeString('es-ES', timeOptions);
+        
+        // 2. Data: dd/mmm/yyyy
+        const day = String(now.getDate()).padStart(2, '0');
+        const year = now.getFullYear();
+        
+        // Mês abreviado em espanhol (ex: Nov)
+        const monthOptions = { month: 'short' };
+        const monthPart = now.toLocaleDateString('es-ES', monthOptions);
+        
+        const datePart = `${day}/${monthPart}/${year}`;
+        
+        // Atualiza os elementos no cabeçalho
+        document.getElementById('time-clock').textContent = timePart;
+        document.getElementById('date-clock').textContent = datePart;
     }
 </script>
 
 </body>
 </html>
-
